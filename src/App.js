@@ -13,34 +13,31 @@ class App extends Component {
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    PositivePercentage: 0,
   };
 
   counter = e => {
     let key = e.target.textContent.toLowerCase();
     this.setState({ [key]: this.state[key] + 1 });
-    this.countTotalFeedback();
-    this.countPositiveFeedbackPercentage();
   };
 
-  countTotalFeedback = () => this.setState({ total: this.state.total + 1 });
-  countPositiveFeedbackPercentage = () =>
-    this.setState(prevState => ({
-      PositivePercentage: Math.round((prevState.good * 100) / prevState.total),
-    }));
+  countTotalFeedback = total =>
+    Object.values(total).reduce((acc, el) => acc + el);
+
+  countPositiveFeedbackPercentage = (good,total) =>Math.round((good * 100) / total);
+
 
   render() {
-    const { good, neutral, bad, total, PositivePercentage } = this.state;
+    const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback(this.state);
+    const PositivePercentage = this.countPositiveFeedbackPercentage(good,total);
+    
     return (
       <>
         <Section title="Please leave feedback">
-          <FeedbackOptions
-            onLeaveFeedback={this.counter}
-          />
+          <FeedbackOptions onLeaveFeedback={this.counter} />
         </Section>
 
-        {this.state.total > 0 ? (
+        {total > 0 ? (
           <Section title="Statistics">
             <Statistics
               good={good}
