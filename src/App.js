@@ -17,7 +17,7 @@ class App extends Component {
 
   counter = e => {
     let key = e.target.textContent.toLowerCase();
-    this.setState({ [key]: this.state[key] + 1 });
+    this.setState( state=>({ [key]: state[key] + 1 }));
   };
 
   countTotalFeedback = total =>
@@ -30,7 +30,7 @@ class App extends Component {
     const { good, neutral, bad } = this.state;
     const total = this.countTotalFeedback(this.state);
     const PositivePercentage = this.countPositiveFeedbackPercentage(good,total);
-    
+
     return (
       <>
         <Section title="Please leave feedback">
